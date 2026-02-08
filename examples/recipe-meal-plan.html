@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wireframe — Recipe Discovery &amp; Meal Planning</title>
+  <style>
+/* Wireframe CSS Component Library
+   Balsamiq-style wireframe rendering — grayscale, minimal, clean.
+   Inlined into generated HTML for single-file portability. */
+
+/* ── Reset & Base ──────────────────────────────────────── */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Shell ─────────────────────────────────────────────── */
+
+.wf-page {
+  font-family: system-ui, -apple-system, sans-serif;
+  color: #333;
+  background: #fff;
+  padding: 48px 64px;
+  line-height: 1.6;
+  max-width: 1080px;
+}
+
+.wf-flow-title {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+  color: #000;
+}
+
+.wf-flow-subtitle {
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 40px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.wf-flow-diagram {
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', monospace;
+  font-size: 13px;
+  line-height: 1.4;
+  background: #fafafa;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+  padding: 20px 24px;
+  margin: 0 0 48px;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.wf-screen {
+  background: #fff;
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+  width: 900px;
+  height: 512px;
+  overflow: hidden;
+  margin: 0 0 56px;
+  position: relative;
+}
+
+/* Stack: overlay/modal screen layered on top of a base screen */
+.wf-screen-stack {
+  position: relative;
+  width: 900px;
+  height: 512px;
+  margin: 0 0 56px;
+}
+
+.wf-screen-stack .wf-screen {
+  margin: 0;
+}
+
+.wf-screen-stack .wf-screen-base {
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+  overflow: hidden;
+  filter: brightness(0.95);
+}
+
+.wf-screen-stack .wf-screen-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wf-screen-stack .wf-screen-overlay .wf-modal {
+  position: relative;
+}
+
+.wf-screen-title {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+  margin-bottom: 6px;
+  color: #000;
+}
+
+.wf-screen-desc {
+  font-size: 15px;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+/* ── Layout ────────────────────────────────────────────── */
+
+.wf-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.wf-body {
+  padding: 16px;
+}
+
+.wf-footer {
+  padding: 12px 16px;
+  border-top: 1px solid #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.wf-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.wf-col {
+  flex: 1;
+  min-width: 0;
+}
+
+.wf-col-sidebar {
+  flex: 0 0 40%;
+  min-width: 0;
+}
+
+.wf-divider {
+  border: none;
+  border-top: 1px solid #ccc;
+  margin: 16px 0;
+}
+
+.wf-section {
+  margin-bottom: 16px;
+}
+
+.wf-section:last-child {
+  margin-bottom: 0;
+}
+
+/* ── Placeholders ──────────────────────────────────────── */
+
+.wf-heading {
+  background: #333;
+  height: 14px;
+  border-radius: 2px;
+  width: 60%;
+  margin-bottom: 8px;
+}
+
+.wf-heading-lg {
+  background: #222;
+  height: 20px;
+  border-radius: 2px;
+  width: 50%;
+  margin-bottom: 12px;
+}
+
+.wf-text {
+  background: #d0d0d0;
+  height: 10px;
+  border-radius: 2px;
+  margin-bottom: 6px;
+}
+
+.wf-text:last-child {
+  width: 75%;
+}
+
+.wf-meta {
+  background: #b0b0b0;
+  height: 10px;
+  border-radius: 2px;
+  width: 40%;
+  margin-bottom: 6px;
+}
+
+/* ── Media ─────────────────────────────────────────────── */
+
+.wf-image {
+  background: #ddd;
+  height: 120px;
+  border-radius: 2px;
+  position: relative;
+  margin-bottom: 8px;
+  background-image:
+    linear-gradient(to top right, transparent calc(50% - 1px), #bbb calc(50% - 1px), #bbb calc(50% + 1px), transparent calc(50% + 1px)),
+    linear-gradient(to bottom right, transparent calc(50% - 1px), #bbb calc(50% - 1px), #bbb calc(50% + 1px), transparent calc(50% + 1px));
+}
+
+.wf-image-sm {
+  background: #ddd;
+  height: 64px;
+  border-radius: 2px;
+  position: relative;
+  margin-bottom: 8px;
+  background-image:
+    linear-gradient(to top right, transparent calc(50% - 1px), #bbb calc(50% - 1px), #bbb calc(50% + 1px), transparent calc(50% + 1px)),
+    linear-gradient(to bottom right, transparent calc(50% - 1px), #bbb calc(50% - 1px), #bbb calc(50% + 1px), transparent calc(50% + 1px));
+}
+
+.wf-image-hero {
+  background: #ddd;
+  height: 180px;
+  margin-bottom: 0;
+  background-image:
+    linear-gradient(to top right, transparent calc(50% - 1px), #bbb calc(50% - 1px), #bbb calc(50% + 1px), transparent calc(50% + 1px)),
+    linear-gradient(to bottom right, transparent calc(50% - 1px), #bbb calc(50% - 1px), #bbb calc(50% + 1px), transparent calc(50% + 1px));
+}
+
+.wf-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #ccc;
+  flex-shrink: 0;
+}
+
+/* ── Buttons ───────────────────────────────────────────── */
+
+.wf-btn {
+  display: inline-block;
+  padding: 8px 20px;
+  background: #333;
+  color: #fff;
+  border: 1px solid #333;
+  border-radius: 3px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: default;
+  text-align: center;
+}
+
+.wf-btn-secondary {
+  display: inline-block;
+  padding: 8px 20px;
+  background: #fff;
+  color: #333;
+  border: 1px solid #999;
+  border-radius: 3px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: default;
+  text-align: center;
+}
+
+.wf-btn-link {
+  display: inline-block;
+  padding: 8px 0;
+  background: none;
+  color: #555;
+  border: none;
+  font-size: 13px;
+  text-decoration: underline;
+  cursor: default;
+}
+
+/* ── Forms ─────────────────────────────────────────────── */
+
+.wf-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.wf-input {
+  display: block;
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #aaa;
+  border-radius: 2px;
+  font-size: 13px;
+  background: #fff;
+  color: #999;
+  margin-bottom: 12px;
+}
+
+.wf-textarea {
+  display: block;
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #aaa;
+  border-radius: 2px;
+  font-size: 13px;
+  background: #fff;
+  color: #999;
+  min-height: 64px;
+  resize: none;
+  margin-bottom: 12px;
+}
+
+.wf-select {
+  display: inline-block;
+  padding: 8px 28px 8px 10px;
+  border: 1px solid #aaa;
+  border-radius: 2px;
+  font-size: 13px;
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23666'/%3E%3C/svg%3E") no-repeat right 10px center;
+  color: #666;
+  appearance: none;
+  margin-bottom: 12px;
+}
+
+.wf-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 8px;
+  cursor: default;
+}
+
+.wf-checkbox::before {
+  content: '';
+  width: 16px;
+  height: 16px;
+  border: 1px solid #aaa;
+  border-radius: 2px;
+  flex-shrink: 0;
+  background: #fff;
+}
+
+.wf-checkbox.checked::before {
+  background: #555;
+  border-color: #555;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 6l3 3 5-5' stroke='white' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.wf-radio {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 8px;
+  cursor: default;
+}
+
+.wf-radio::before {
+  content: '';
+  width: 16px;
+  height: 16px;
+  border: 1px solid #aaa;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: #fff;
+}
+
+.wf-radio.selected::before {
+  border-color: #555;
+  background: radial-gradient(circle, #555 4px, #fff 4px);
+}
+
+/* ── Data ──────────────────────────────────────────────── */
+
+.wf-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+.wf-table th {
+  text-align: left;
+  padding: 8px;
+  border-bottom: 2px solid #999;
+  font-weight: 600;
+  color: #555;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.wf-table td {
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+  color: #444;
+}
+
+.wf-card {
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 12px;
+  margin-bottom: 12px;
+  background: #fff;
+}
+
+.wf-stat-card {
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 16px;
+  text-align: center;
+  background: #fff;
+}
+
+.wf-stat-card .wf-heading-lg {
+  margin: 0 auto 4px;
+  width: 40%;
+}
+
+.wf-tag {
+  display: inline-block;
+  padding: 2px 10px;
+  border: 1px solid #bbb;
+  border-radius: 12px;
+  font-size: 11px;
+  color: #666;
+  margin-right: 4px;
+  margin-bottom: 4px;
+}
+
+/* ── Nav ───────────────────────────────────────────────── */
+
+.wf-tabs {
+  display: flex;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 16px;
+}
+
+.wf-tab {
+  padding: 8px 16px;
+  font-size: 13px;
+  color: #888;
+  border-bottom: 2px solid transparent;
+  cursor: default;
+}
+
+.wf-tab.active {
+  color: #333;
+  font-weight: 600;
+  border-bottom-color: #333;
+}
+
+.wf-nav-item {
+  display: block;
+  padding: 8px 12px;
+  font-size: 13px;
+  color: #555;
+  border-radius: 3px;
+  margin-bottom: 2px;
+  cursor: default;
+}
+
+.wf-nav-item.active {
+  background: #e8e8e8;
+  color: #222;
+  font-weight: 600;
+}
+
+.wf-breadcrumb {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 12px;
+}
+
+.wf-breadcrumb span::after {
+  content: ' / ';
+  color: #bbb;
+}
+
+.wf-breadcrumb span:last-child {
+  color: #333;
+  font-weight: 600;
+}
+
+.wf-breadcrumb span:last-child::after {
+  content: '';
+}
+
+.wf-stepper {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 12px;
+  color: #aaa;
+  margin-bottom: 16px;
+}
+
+.wf-stepper .step {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.wf-stepper .step.active {
+  color: #333;
+  font-weight: 600;
+}
+
+.wf-stepper .step.completed {
+  color: #666;
+}
+
+.wf-stepper .step::after {
+  content: '—';
+  margin-left: 8px;
+  color: #ccc;
+}
+
+.wf-stepper .step:last-child::after {
+  content: '';
+}
+
+/* ── Overlay ───────────────────────────────────────────── */
+
+.wf-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  border-radius: 6px;
+}
+
+.wf-modal {
+  background: #fff;
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+  padding: 24px;
+  max-width: 420px;
+  width: 85%;
+}
+
+/* ── Utility ───────────────────────────────────────────── */
+
+.wf-flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.wf-flex-end {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+}
+
+.wf-flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wf-inline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wf-mt { margin-top: 16px; }
+.wf-mb { margin-bottom: 16px; }
+.wf-mt-sm { margin-top: 8px; }
+.wf-mb-sm { margin-bottom: 8px; }
+.wf-gap-sm { gap: 8px; }
+.wf-gap { gap: 16px; }
+.wf-p { padding: 16px; }
+.wf-text-center { text-align: center; }
+.wf-text-right { text-align: right; }
+.wf-text-sm { font-size: 12px; color: #888; }
+.wf-w-full { width: 100%; }
+.wf-grow { flex-grow: 1; }
+
+/* ── Segment Control ────────────────────────────────────── */
+
+.wf-segment {
+  display: inline-flex;
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 40px;
+}
+
+.wf-segment-btn {
+  padding: 7px 20px;
+  font-size: 13px;
+  font-weight: 500;
+  background: #fff;
+  color: #666;
+  border: none;
+  border-right: 1px solid #d0d0d0;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.wf-segment-btn:last-child {
+  border-right: none;
+}
+
+.wf-segment-btn:hover {
+  color: #333;
+  background: #f5f5f5;
+}
+
+.wf-segment-btn.active {
+  background: #333;
+  color: #fff;
+}
+
+/* ── Prototype View ────────────────────────────────────── */
+
+/* Chrome bar — only visible in prototype view */
+.wf-proto-bar {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  width: 900px;
+  padding: 0 0 12px;
+  font-size: 13px;
+  color: #666;
+}
+
+.wf-proto-bar-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.wf-proto-bar-btn {
+  padding: 4px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #fff;
+  font-size: 12px;
+  color: #555;
+  cursor: pointer;
+}
+
+.wf-proto-bar-btn:hover {
+  border-color: #999;
+  color: #333;
+}
+
+.wf-proto-bar-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.wf-proto-bar-title {
+  font-weight: 600;
+  color: #333;
+}
+
+.wf-proto-bar-counter {
+  font-size: 12px;
+  color: #999;
+}
+
+/* View: prototype — one screen at a time, clickable actions */
+.wf-view-prototype .wf-screen-title,
+.wf-view-prototype .wf-screen-desc {
+  display: none;
+}
+
+.wf-proto-caption {
+  display: none;
+  width: 900px;
+  padding: 8px 0 0;
+}
+
+.wf-view-prototype .wf-proto-caption {
+  display: block;
+}
+
+.wf-proto-caption-title {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+  color: #000;
+  margin-bottom: 6px;
+}
+
+.wf-proto-caption-desc {
+  font-size: 15px;
+  color: #666;
+  line-height: 1.5;
+}
+
+.wf-view-prototype .wf-proto-bar {
+  display: flex;
+}
+
+.wf-view-prototype .wf-screen,
+.wf-view-prototype .wf-screen-stack {
+  display: none;
+}
+
+.wf-view-prototype .wf-screen.wf-proto-visible,
+.wf-view-prototype .wf-screen-stack.wf-proto-visible {
+  display: block;
+}
+
+.wf-view-prototype .wf-btn[data-goto],
+.wf-view-prototype .wf-btn-link[data-goto] {
+  cursor: pointer;
+}
+
+.wf-view-prototype .wf-btn[data-goto]:hover {
+  background: #111;
+}
+
+.wf-view-prototype .wf-btn-link[data-goto]:hover {
+  color: #000;
+}
+
+/* ── Styled Flow Diagram ──────────────────────────────────── */
+
+.wf-flow {
+  background: #fafafa;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+  padding: 20px 24px;
+  margin: 0 0 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.wf-flow-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.wf-flow-node {
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  padding: 8px 16px;
+  background: #fafafa;
+  font-size: 13px;
+  font-weight: 600;
+  color: #444;
+  white-space: nowrap;
+  cursor: default;
+  transition: all 0.15s ease;
+}
+
+.wf-flow-node.current {
+  border-color: #333;
+  background: #fff;
+  color: #000;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+.wf-view-prototype .wf-flow-node {
+  cursor: pointer;
+}
+
+.wf-view-prototype .wf-flow-node:hover {
+  border-color: #999;
+  background: #fff;
+}
+
+.wf-flow-arrow {
+  color: #ccc;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.wf-flow-arrow-down {
+  color: #ccc;
+  font-size: 18px;
+  text-align: center;
+  line-height: 1;
+}
+  </style>
+</head>
+<body class="wf-page">
+
+  <h1 class="wf-flow-title">Recipe Discovery &amp; Meal Planning</h1>
+  <p class="wf-flow-subtitle">6 screens &middot; Discover &rarr; Detail &rarr; Plan &rarr; Grid &rarr; List &rarr; Empty</p>
+
+  <pre class="wf-flow-diagram">┌──────────────┐     ┌──────────────┐     ┌──────────────┐
+│  Discover    │     │   Recipe     │     │ Add to Meal  │
+│  Feed        ├────▶│   Detail     ├────▶│ Plan         │
+└──────────────┘     └──────────────┘     └──────┬───────┘
+                                                 │
+                                                 ▼
+┌──────────────┐     ┌──────────────┐     ┌──────────────┐
+│  Shopping    │     │  Weekly      │     │              │
+│  List        │◀────┤  Meal Plan   │◀────┤ Empty State  │
+│              │     │              │     │              │
+└──────────────┘     └──────────────┘     └──────────────┘</pre>
+
+  <div class="wf-segment">
+    <button class="wf-segment-btn active" onclick="setView('screens')">Screens</button>
+    <button class="wf-segment-btn" onclick="setView('prototype')">Prototype</button>
+  </div>
+
+  <div class="wf-proto-bar">
+    <div class="wf-proto-bar-nav">
+      <button class="wf-proto-bar-btn" onclick="goScreen(-1)" id="wf-prev">&larr; Back</button>
+      <span class="wf-proto-bar-title" id="wf-cur-title"></span>
+    </div>
+    <span class="wf-proto-bar-counter" id="wf-counter"></span>
+  </div>
+
+  <!-- ── Screen 1: Discover Feed ───────────────────────── -->
+
+  <h2 class="wf-screen-title">Step 1: Discover Feed</h2>
+  <p class="wf-screen-desc">User browses recipe cards organized by category tabs. Each card shows a food image, recipe name, category, and cook time.</p>
+
+  <div class="wf-screen" data-screen="1" data-title="Discover Feed" data-desc="User browses recipe cards organized by category tabs. Each card shows a food image, recipe name, category, and cook time.">
+    <div class="wf-header">
+      <div class="wf-heading-lg" style="margin-bottom: 0;"></div>
+    </div>
+
+    <div class="wf-body" style="padding-top: 0;">
+      <div class="wf-tabs">
+        <span class="wf-tab active">All</span>
+        <span class="wf-tab">Breakfast</span>
+        <span class="wf-tab">Lunch</span>
+        <span class="wf-tab">Dinner</span>
+        <span class="wf-tab">Dessert</span>
+      </div>
+
+      <div class="wf-row">
+        <div class="wf-col">
+          <div class="wf-card">
+            <div class="wf-image-sm"></div>
+            <div class="wf-heading" style="width: 80%;"></div>
+            <div class="wf-inline wf-mb-sm">
+              <div class="wf-meta" style="width: 30%;"></div>
+              <span style="color: #ccc;">&middot;</span>
+              <div class="wf-meta" style="width: 25%;"></div>
+            </div>
+            <div class="wf-flex-end">
+              <span class="wf-btn" data-goto="2">View</span>
+            </div>
+          </div>
+        </div>
+        <div class="wf-col">
+          <div class="wf-card">
+            <div class="wf-image-sm"></div>
+            <div class="wf-heading" style="width: 80%;"></div>
+            <div class="wf-inline wf-mb-sm">
+              <div class="wf-meta" style="width: 30%;"></div>
+              <span style="color: #ccc;">&middot;</span>
+              <div class="wf-meta" style="width: 25%;"></div>
+            </div>
+            <div class="wf-flex-end">
+              <span class="wf-btn" data-goto="2">View</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wf-row">
+        <div class="wf-col">
+          <div class="wf-card">
+            <div class="wf-image-sm"></div>
+            <div class="wf-heading" style="width: 80%;"></div>
+            <div class="wf-inline wf-mb-sm">
+              <div class="wf-meta" style="width: 30%;"></div>
+              <span style="color: #ccc;">&middot;</span>
+              <div class="wf-meta" style="width: 25%;"></div>
+            </div>
+            <div class="wf-flex-end">
+              <span class="wf-btn" data-goto="2">View</span>
+            </div>
+          </div>
+        </div>
+        <div class="wf-col">
+          <div class="wf-card">
+            <div class="wf-image-sm"></div>
+            <div class="wf-heading" style="width: 80%;"></div>
+            <div class="wf-inline wf-mb-sm">
+              <div class="wf-meta" style="width: 30%;"></div>
+              <span style="color: #ccc;">&middot;</span>
+              <div class="wf-meta" style="width: 25%;"></div>
+            </div>
+            <div class="wf-flex-end">
+              <span class="wf-btn" data-goto="2">View</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wf-row">
+        <div class="wf-col">
+          <div class="wf-card">
+            <div class="wf-image-sm"></div>
+            <div class="wf-heading" style="width: 80%;"></div>
+            <div class="wf-inline wf-mb-sm">
+              <div class="wf-meta" style="width: 30%;"></div>
+              <span style="color: #ccc;">&middot;</span>
+              <div class="wf-meta" style="width: 25%;"></div>
+            </div>
+            <div class="wf-flex-end">
+              <span class="wf-btn" data-goto="2">View</span>
+            </div>
+          </div>
+        </div>
+        <div class="wf-col">
+          <div class="wf-card">
+            <div class="wf-image-sm"></div>
+            <div class="wf-heading" style="width: 80%;"></div>
+            <div class="wf-inline wf-mb-sm">
+              <div class="wf-meta" style="width: 30%;"></div>
+              <span style="color: #ccc;">&middot;</span>
+              <div class="wf-meta" style="width: 25%;"></div>
+            </div>
+            <div class="wf-flex-end">
+              <span class="wf-btn" data-goto="2">View</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Screen 2: Recipe Detail ───────────────────────── -->
+
+  <h2 class="wf-screen-title">Step 2: Recipe Detail</h2>
+  <p class="wf-screen-desc">User views the recipe's hero image, ingredients list, and step-by-step instructions, then adds it to their meal plan.</p>
+
+  <div class="wf-screen" data-screen="2" data-title="Recipe Detail" data-desc="User views the recipe's hero image, ingredients list, and step-by-step instructions, then adds it to their meal plan.">
+    <div class="wf-header">
+      <span class="wf-btn-link" data-goto="1">&lt; Back</span>
+      <span class="wf-btn" data-goto="3">Add to Plan</span>
+    </div>
+
+    <div class="wf-image-hero"></div>
+
+    <div class="wf-body">
+      <div class="wf-section">
+        <div class="wf-heading-lg" style="width: 65%;"></div>
+        <div class="wf-inline wf-mb">
+          <div class="wf-meta" style="width: 20%;"></div>
+          <span style="color: #ccc;">&middot;</span>
+          <div class="wf-meta" style="width: 15%;"></div>
+          <span style="color: #ccc;">&middot;</span>
+          <div class="wf-meta" style="width: 18%;"></div>
+        </div>
+        <div class="wf-text"></div>
+        <div class="wf-text" style="width: 90%;"></div>
+      </div>
+
+      <div class="wf-section">
+        <div class="wf-label">Ingredients</div>
+        <hr class="wf-divider" style="margin-top: 4px;">
+        <div class="wf-text"></div>
+        <div class="wf-text"></div>
+        <div class="wf-text"></div>
+        <div class="wf-text" style="width: 85%;"></div>
+        <div class="wf-text"></div>
+      </div>
+
+      <div class="wf-section">
+        <div class="wf-label">Instructions</div>
+        <hr class="wf-divider" style="margin-top: 4px;">
+        <div class="wf-text"></div>
+        <div class="wf-text" style="width: 70%;"></div>
+        <div class="wf-text"></div>
+        <div class="wf-text"></div>
+        <div class="wf-text"></div>
+        <div class="wf-text"></div>
+      </div>
+
+      <div class="wf-flex-end wf-mt">
+        <span class="wf-btn" data-goto="3">Add to Plan</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Screen 3: Add to Meal Plan ────────────────────── -->
+
+  <h2 class="wf-screen-title">Step 3: Add to Meal Plan</h2>
+  <p class="wf-screen-desc">User picks a day of the week and meal slot (breakfast, lunch, or dinner) to assign the recipe.</p>
+
+  <div class="wf-screen" data-screen="3" data-title="Add to Meal Plan" data-desc="User picks a day of the week and meal slot (breakfast, lunch, or dinner) to assign the recipe.">
+    <div class="wf-header">
+      <span>Add to Meal Plan</span>
+    </div>
+
+    <div class="wf-body">
+      <div class="wf-section">
+        <div class="wf-heading" style="width: 70%;"></div>
+        <div class="wf-inline wf-mb">
+          <div class="wf-meta" style="width: 20%;"></div>
+          <span style="color: #ccc;">&middot;</span>
+          <div class="wf-meta" style="width: 15%;"></div>
+        </div>
+      </div>
+
+      <div class="wf-section">
+        <div class="wf-label">Day</div>
+        <div class="wf-row wf-mt-sm" style="gap: 8px;">
+          <div class="wf-card" style="flex: 1; text-align: center; padding: 8px; border-color: #333; background: #f5f5f5;">
+            <span style="font-size: 12px; font-weight: 600;">Mon</span>
+          </div>
+          <div class="wf-card" style="flex: 1; text-align: center; padding: 8px;">
+            <span style="font-size: 12px;">Tue</span>
+          </div>
+          <div class="wf-card" style="flex: 1; text-align: center; padding: 8px;">
+            <span style="font-size: 12px;">Wed</span>
+          </div>
+          <div class="wf-card" style="flex: 1; text-align: center; padding: 8px;">
+            <span style="font-size: 12px;">Thu</span>
+          </div>
+        </div>
+        <div class="wf-row wf-mt-sm" style="gap: 8px;">
+          <div class="wf-card" style="flex: 1; text-align: center; padding: 8px;">
+            <span style="font-size: 12px;">Fri</span>
+          </div>
+          <div class="wf-card" style="flex: 1; text-align: center; padding: 8px;">
+            <span style="font-size: 12px;">Sat</span>
+          </div>
+          <div class="wf-card" style="flex: 1; text-align: center; padding: 8px;">
+            <span style="font-size: 12px;">Sun</span>
+          </div>
+          <div style="flex: 1;"></div>
+        </div>
+      </div>
+
+      <div class="wf-section wf-mt">
+        <div class="wf-label">Meal</div>
+        <label class="wf-radio selected">Breakfast</label>
+        <label class="wf-radio">Lunch</label>
+        <label class="wf-radio">Dinner</label>
+      </div>
+
+      <div class="wf-flex-center wf-mt" style="flex-direction: column; gap: 8px;">
+        <span class="wf-btn" data-goto="4">Add to Plan</span>
+        <span class="wf-btn-secondary" data-goto="2">Cancel</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Screen 4: Weekly Meal Plan ────────────────────── -->
+
+  <h2 class="wf-screen-title">Step 4: Weekly Meal Plan</h2>
+  <p class="wf-screen-desc">User views their complete week at a glance — a grid of days and meal slots with assigned recipes.</p>
+
+  <div class="wf-screen" data-screen="4" data-title="Weekly Meal Plan" data-desc="User views their complete week at a glance — a grid of days and meal slots with assigned recipes.">
+    <div class="wf-header">
+      <div class="wf-heading-lg" style="margin-bottom: 0; width: 30%;"></div>
+      <div class="wf-inline">
+        <span style="color: #aaa;">&lt;</span>
+        <div class="wf-meta" style="width: auto; background: none; height: auto; color: #888; font-size: 12px;">Week of Feb 3</div>
+        <span style="color: #aaa;">&gt;</span>
+      </div>
+    </div>
+
+    <div class="wf-body" style="padding: 0;">
+      <table class="wf-table" style="margin-bottom: 0;">
+        <thead>
+          <tr>
+            <th style="width: 12%;">Day</th>
+            <th>Breakfast</th>
+            <th>Lunch</th>
+            <th>Dinner</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-weight: 600;">Mon</td>
+            <td><div class="wf-text" style="margin-bottom: 2px;"></div><div class="wf-meta" style="width: 50%;"></div></td>
+            <td><div class="wf-text" style="margin-bottom: 2px;"></div><div class="wf-meta" style="width: 50%;"></div></td>
+            <td><div class="wf-text" style="margin-bottom: 2px;"></div><div class="wf-meta" style="width: 50%;"></div></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 600;">Tue</td>
+            <td><div class="wf-text" style="margin-bottom: 2px;"></div><div class="wf-meta" style="width: 50%;"></div></td>
+            <td style="color: #bbb;">&mdash;</td>
+            <td><div class="wf-text" style="margin-bottom: 2px;"></div><div class="wf-meta" style="width: 50%;"></div></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 600;">Wed</td>
+            <td style="color: #bbb;">&mdash;</td>
+            <td><div class="wf-text" style="margin-bottom: 2px;"></div><div class="wf-meta" style="width: 50%;"></div></td>
+            <td><div class="wf-text" style="margin-bottom: 2px;"></div><div class="wf-meta" style="width: 50%;"></div></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 600;">Thu</td>
+            <td><div class="wf-text" style="margin-bottom: 2px;"></div><div class="wf-meta" style="width: 50%;"></div></td>
+            <td><div class="wf-text" style="margin-bottom: 2px;"></div><div class="wf-meta" style="width: 50%;"></div></td>
+            <td style="color: #bbb;">&mdash;</td>
+          </tr>
+          <tr>
+            <td style="font-weight: 600;">Fri</td>
+            <td style="color: #bbb;">&mdash;</td>
+            <td style="color: #bbb;">&mdash;</td>
+            <td><div class="wf-text" style="margin-bottom: 2px;"></div><div class="wf-meta" style="width: 50%;"></div></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 600;">Sat</td>
+            <td><div class="wf-text" style="margin-bottom: 2px;"></div><div class="wf-meta" style="width: 50%;"></div></td>
+            <td><div class="wf-text" style="margin-bottom: 2px;"></div><div class="wf-meta" style="width: 50%;"></div></td>
+            <td><div class="wf-text" style="margin-bottom: 2px;"></div><div class="wf-meta" style="width: 50%;"></div></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 600;">Sun</td>
+            <td><div class="wf-text" style="margin-bottom: 2px;"></div><div class="wf-meta" style="width: 50%;"></div></td>
+            <td style="color: #bbb;">&mdash;</td>
+            <td><div class="wf-text" style="margin-bottom: 2px;"></div><div class="wf-meta" style="width: 50%;"></div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="wf-footer">
+      <span class="wf-btn-link" data-goto="6">Clear Plan</span>
+      <span class="wf-btn" data-goto="5">Shopping List</span>
+    </div>
+  </div>
+
+  <!-- ── Screen 5: Shopping List ───────────────────────── -->
+
+  <h2 class="wf-screen-title">Step 5: Shopping List</h2>
+  <p class="wf-screen-desc">User checks off auto-generated ingredients grouped by grocery aisle. A counter shows progress.</p>
+
+  <div class="wf-screen" data-screen="5" data-title="Shopping List" data-desc="User checks off auto-generated ingredients grouped by grocery aisle. A counter shows progress.">
+    <div class="wf-header">
+      <span>Shopping List</span>
+      <div class="wf-meta" style="width: auto; background: none; height: auto; color: #888; font-size: 12px;">2 / 13 items done</div>
+    </div>
+
+    <div class="wf-body" style="overflow-y: auto; height: calc(100% - 45px);">
+      <div class="wf-section">
+        <div class="wf-label">Produce</div>
+        <label class="wf-checkbox checked">Tomatoes (4 large)</label>
+        <label class="wf-checkbox">Bell peppers (2)</label>
+        <label class="wf-checkbox">Fresh spinach (1 bag)</label>
+        <label class="wf-checkbox">Yellow onions (3)</label>
+      </div>
+
+      <div class="wf-section">
+        <div class="wf-label">Dairy</div>
+        <label class="wf-checkbox">Butter (1 stick)</label>
+        <label class="wf-checkbox">Parmesan cheese (block)</label>
+      </div>
+
+      <div class="wf-section">
+        <div class="wf-label">Pantry</div>
+        <label class="wf-checkbox checked">Olive oil (extra virgin)</label>
+        <label class="wf-checkbox">Spaghetti (1 lb)</label>
+        <label class="wf-checkbox">Canned diced tomatoes (2)</label>
+      </div>
+
+      <div class="wf-section">
+        <div class="wf-label">Meat &amp; Seafood</div>
+        <label class="wf-checkbox">Chicken breast (2 lbs)</label>
+        <label class="wf-checkbox">Salmon fillets (4)</label>
+      </div>
+
+      <div class="wf-mt">
+        <span class="wf-btn-link" data-goto="4">&lt; Back to Meal Plan</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Screen 6: Empty State ─────────────────────────── -->
+
+  <h2 class="wf-screen-title">Step 6: Empty State</h2>
+  <p class="wf-screen-desc">New user with no meal plan sees a friendly prompt encouraging them to discover recipes and start building their week.</p>
+
+  <div class="wf-screen" data-screen="6" data-title="Empty State" data-desc="New user with no meal plan sees a friendly prompt encouraging them to discover recipes and start building their week.">
+    <div class="wf-header">
+      <div class="wf-heading-lg" style="margin-bottom: 0; width: 30%;"></div>
+    </div>
+
+    <div class="wf-body wf-text-center" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: calc(100% - 45px);">
+      <div class="wf-heading-lg" style="width: 40%; margin: 0 auto 16px;"></div>
+      <div class="wf-text" style="width: 60%; margin: 0 auto 6px;"></div>
+      <div class="wf-text" style="width: 55%; margin: 0 auto 24px;"></div>
+      <span class="wf-btn" data-goto="1">Browse Recipes</span>
+    </div>
+  </div>
+
+  <div class="wf-proto-caption">
+    <div class="wf-proto-caption-title" id="wf-caption-title"></div>
+    <div class="wf-proto-caption-desc" id="wf-caption-desc"></div>
+  </div>
+
+  <script>
+    const body = document.body;
+    const screens = document.querySelectorAll('[data-screen]');
+    const total = screens.length;
+    const segBtns = document.querySelectorAll('.wf-segment-btn');
+    let current = 1;
+
+    function setView(view) {
+      body.classList.remove('wf-view-prototype');
+      segBtns.forEach(b => b.classList.remove('active'));
+      if (view === 'prototype') {
+        body.classList.add('wf-view-prototype');
+        segBtns[1].classList.add('active');
+        showScreen(current);
+      } else {
+        segBtns[0].classList.add('active');
+      }
+    }
+
+    function showScreen(n) {
+      current = Math.max(1, Math.min(n, total));
+      screens.forEach(s => s.classList.remove('wf-proto-visible'));
+      const target = document.querySelector(`[data-screen="${current}"]`);
+      if (target) target.classList.add('wf-proto-visible');
+      document.getElementById('wf-cur-title').textContent = target?.dataset.title || '';
+      document.getElementById('wf-counter').textContent = current + ' / ' + total;
+      document.getElementById('wf-prev').disabled = current === 1;
+      document.getElementById('wf-caption-title').textContent = 'Step ' + current + ': ' + (target?.dataset.title || '');
+      document.getElementById('wf-caption-desc').textContent = target?.dataset.desc || '';
+    }
+
+    function goScreen(delta) { showScreen(current + delta); }
+
+    document.addEventListener('click', e => {
+      if (!body.classList.contains('wf-view-prototype')) return;
+      const btn = e.target.closest('[data-goto]');
+      if (btn) showScreen(parseInt(btn.dataset.goto));
+    });
+
+    document.addEventListener('keydown', e => {
+      if (!body.classList.contains('wf-view-prototype')) return;
+      if (e.key === 'ArrowRight') goScreen(1);
+      if (e.key === 'ArrowLeft') goScreen(-1);
+    });
+  </script>
+
+</body>
+</html>
