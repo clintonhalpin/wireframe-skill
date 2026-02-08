@@ -1,0 +1,8 @@
+{
+  "name": "wireframe",
+  "description": "Generate ASCII wireframes and user flow diagrams using box-drawing characters and block elements",
+  "version": "1.0.0",
+  "author": {
+    "name": "Clinton Halpin"
+  }
+}
