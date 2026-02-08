@@ -1,3 +1,10 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wireframe — Event RSVP &amp; Ticketing</title>
+  <style>
 /* Wireframe CSS Component Library
    Balsamiq-style wireframe rendering — grayscale, minimal, clean.
    Inlined into generated HTML for single-file portability. */
@@ -797,3 +804,357 @@
   text-align: center;
   line-height: 1;
 }
+  </style>
+</head>
+<body class="wf-page">
+
+  <h1 class="wf-flow-title">Event RSVP &amp; Ticketing</h1>
+  <p class="wf-flow-subtitle">6 screens &middot; Landing &rarr; Tickets &rarr; Attendee &rarr; Pay &rarr; E-Ticket &rarr; Reminder</p>
+
+  <pre class="wf-flow-diagram">┌──────────────┐     ┌──────────────┐     ┌──────────────┐
+│    Event     │     │   Ticket     │     │  Attendee    │
+│   Landing    ├────▶│  Selection   ├────▶│  Info        │
+└──────────────┘     └──────────────┘     └──────┬───────┘
+                                                 │
+                                                 ▼
+┌──────────────┐     ┌──────────────┐     ┌──────────────┐
+│              │     │              │     │              │
+│ Notification │◀────┤  E-Ticket    │◀────┤  Payment     │
+│              │     │              │     │              │
+└──────────────┘     └──────────────┘     └──────────────┘</pre>
+
+  <div class="wf-segment">
+    <button class="wf-segment-btn active" onclick="setView('screens')">Screens</button>
+    <button class="wf-segment-btn" onclick="setView('prototype')">Prototype</button>
+  </div>
+
+  <div class="wf-proto-bar">
+    <div class="wf-proto-bar-nav">
+      <button class="wf-proto-bar-btn" onclick="goScreen(-1)" id="wf-prev">&larr; Back</button>
+      <span class="wf-proto-bar-title" id="wf-cur-title"></span>
+    </div>
+    <span class="wf-proto-bar-counter" id="wf-counter"></span>
+  </div>
+
+  <!-- ── Screen 1: Event Landing ──────────────────────────── -->
+
+  <h2 class="wf-screen-title">Step 1: Event Landing</h2>
+  <p class="wf-screen-desc">User views event details and decides to get tickets.</p>
+
+  <div class="wf-screen" data-screen="1" data-title="Event Landing" data-desc="User views event details and decides to get tickets.">
+    <div class="wf-image-hero"></div>
+
+    <div class="wf-body">
+      <div class="wf-section">
+        <div class="wf-heading-lg" style="width: 65%;"></div>
+        <div class="wf-meta" style="width: 35%;"></div>
+        <div class="wf-meta" style="width: 40%;"></div>
+      </div>
+
+      <div class="wf-section">
+        <div class="wf-text"></div>
+        <div class="wf-text" style="width: 90%;"></div>
+      </div>
+
+      <div class="wf-flex-center wf-mt">
+        <span class="wf-btn" data-goto="2">Get Tickets</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Screen 2: Ticket Selection ───────────────────────── -->
+
+  <h2 class="wf-screen-title">Step 2: Ticket Selection</h2>
+  <p class="wf-screen-desc">User picks ticket tier and quantity.</p>
+
+  <div class="wf-screen" data-screen="2" data-title="Ticket Selection" data-desc="User picks ticket tier and quantity.">
+    <div class="wf-header">
+      <span>Select Tickets</span>
+    </div>
+
+    <div class="wf-body">
+      <div class="wf-section">
+        <div class="wf-heading-lg" style="width: 45%;"></div>
+        <div class="wf-meta" style="width: 35%;"></div>
+      </div>
+
+      <table class="wf-table">
+        <thead>
+          <tr>
+            <th>Tier</th>
+            <th>Price</th>
+            <th>Qty</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>General Admission</td>
+            <td><div class="wf-meta" style="width: 60%; margin-bottom: 0;"></div></td>
+            <td><select class="wf-select" style="margin-bottom: 0;"><option>1</option></select></td>
+          </tr>
+          <tr>
+            <td>VIP</td>
+            <td><div class="wf-meta" style="width: 60%; margin-bottom: 0;"></div></td>
+            <td><select class="wf-select" style="margin-bottom: 0;"><option>0</option></select></td>
+          </tr>
+          <tr>
+            <td>Early Bird</td>
+            <td><div class="wf-meta" style="width: 60%; margin-bottom: 0;"></div></td>
+            <td><select class="wf-select" style="margin-bottom: 0;"><option>0</option></select></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="wf-section">
+        <div class="wf-label">Promo Code</div>
+        <div class="wf-inline">
+          <input class="wf-input" style="margin-bottom: 0;" placeholder="Enter code">
+          <span class="wf-btn-secondary">Apply</span>
+        </div>
+      </div>
+
+      <div class="wf-flex-between wf-mt">
+        <span style="font-weight: 600; font-size: 13px;">Subtotal</span>
+        <div class="wf-meta" style="width: 15%; margin-bottom: 0;"></div>
+      </div>
+
+      <div class="wf-flex-center wf-mt">
+        <span class="wf-btn" data-goto="3">Continue</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Screen 3: Attendee Info ──────────────────────────── -->
+
+  <h2 class="wf-screen-title">Step 3: Attendee Info</h2>
+  <p class="wf-screen-desc">User enters name and email per ticket.</p>
+
+  <div class="wf-screen" data-screen="3" data-title="Attendee Info" data-desc="User enters name and email per ticket.">
+    <div class="wf-header">
+      <span>Attendee Information</span>
+      <span class="wf-text-sm">Step 2 of 3</span>
+    </div>
+
+    <div class="wf-body">
+      <div class="wf-section">
+        <div class="wf-label">Ticket 1 &mdash; General Admission</div>
+
+        <div class="wf-label wf-mt-sm" style="text-transform: none; font-weight: 400;">Full Name</div>
+        <input class="wf-input" placeholder="Full name">
+
+        <div class="wf-label" style="text-transform: none; font-weight: 400;">Email</div>
+        <input class="wf-input" placeholder="email@example.com">
+      </div>
+
+      <hr class="wf-divider">
+
+      <div class="wf-section">
+        <div class="wf-label">Ticket 2 &mdash; General Admission</div>
+
+        <div class="wf-label wf-mt-sm" style="text-transform: none; font-weight: 400;">Full Name</div>
+        <input class="wf-input" placeholder="Full name">
+
+        <div class="wf-label" style="text-transform: none; font-weight: 400;">Email</div>
+        <input class="wf-input" placeholder="email@example.com">
+      </div>
+    </div>
+
+    <div class="wf-footer">
+      <span class="wf-btn-link" data-goto="2">&lt; Back</span>
+      <span class="wf-btn" data-goto="4">Continue</span>
+    </div>
+  </div>
+
+  <!-- ── Screen 4: Payment ────────────────────────────────── -->
+
+  <h2 class="wf-screen-title">Step 4: Payment</h2>
+  <p class="wf-screen-desc">User enters payment card details alongside the order summary.</p>
+
+  <div class="wf-screen" data-screen="4" data-title="Payment" data-desc="User enters payment card details alongside the order summary.">
+    <div class="wf-header">
+      <span>Payment</span>
+      <span class="wf-text-sm">Step 3 of 3</span>
+    </div>
+
+    <div class="wf-body">
+      <div class="wf-row">
+        <div class="wf-col">
+          <div class="wf-section">
+            <div class="wf-label">Card Details</div>
+
+            <div class="wf-label wf-mt" style="text-transform: none; font-weight: 400;">Cardholder Name</div>
+            <input class="wf-input" placeholder="Name on card">
+
+            <div class="wf-label" style="text-transform: none; font-weight: 400;">Card Number</div>
+            <input class="wf-input" placeholder="0000 0000 0000 0000">
+
+            <div class="wf-row">
+              <div class="wf-col">
+                <div class="wf-label" style="text-transform: none; font-weight: 400;">Exp Date</div>
+                <input class="wf-input" placeholder="MM/YY">
+              </div>
+              <div class="wf-col">
+                <div class="wf-label" style="text-transform: none; font-weight: 400;">CVC</div>
+                <input class="wf-input" placeholder="123">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="wf-col-sidebar">
+          <div class="wf-section" style="background: #fafafa; border: 1px solid #e0e0e0; border-radius: 3px; padding: 12px;">
+            <div class="wf-label">Order Summary</div>
+            <div class="wf-text wf-mt-sm"></div>
+            <div class="wf-inline wf-mb-sm">
+              <div class="wf-meta" style="width: auto; background: none; height: auto; color: #888; font-size: 12px;">2 x General Admission</div>
+            </div>
+
+            <hr class="wf-divider">
+
+            <div class="wf-flex-between wf-mb-sm">
+              <span class="wf-text-sm">Subtotal</span>
+              <div class="wf-meta" style="width: 25%; margin-bottom: 0;"></div>
+            </div>
+            <div class="wf-flex-between wf-mb-sm">
+              <span class="wf-text-sm">Fees</span>
+              <div class="wf-meta" style="width: 25%; margin-bottom: 0;"></div>
+            </div>
+            <hr class="wf-divider">
+            <div class="wf-flex-between">
+              <span style="font-weight: 600; font-size: 13px;">Total</span>
+              <div class="wf-meta" style="width: 25%; margin-bottom: 0;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="wf-footer">
+      <span class="wf-btn-link" data-goto="3">&lt; Back</span>
+      <span class="wf-btn" data-goto="5">Pay Now</span>
+    </div>
+  </div>
+
+  <!-- ── Screen 5: E-Ticket ───────────────────────────────── -->
+
+  <h2 class="wf-screen-title">Step 5: E-Ticket</h2>
+  <p class="wf-screen-desc">User receives digital ticket with QR code.</p>
+
+  <div class="wf-screen" data-screen="5" data-title="E-Ticket" data-desc="User receives digital ticket with QR code.">
+    <div class="wf-body wf-text-center">
+      <div class="wf-section" style="padding: 16px 0;">
+        <div style="font-size: 18px; font-weight: 700; color: #000; margin-bottom: 8px;">You're Going!</div>
+      </div>
+    </div>
+
+    <hr class="wf-divider" style="margin: 0;">
+
+    <div class="wf-body">
+      <div class="wf-section">
+        <div class="wf-heading-lg" style="width: 65%;"></div>
+        <div class="wf-meta" style="width: 35%;"></div>
+        <div class="wf-meta" style="width: 40%;"></div>
+      </div>
+
+      <div class="wf-flex-center wf-mb">
+        <div class="wf-card" style="width: 180px; margin-bottom: 0;">
+          <div class="wf-image" style="height: 100px; margin-bottom: 0;"></div>
+        </div>
+      </div>
+
+      <div class="wf-flex-between wf-mb-sm">
+        <span class="wf-text-sm">Ticket:</span>
+        <div class="wf-meta" style="width: 35%; margin-bottom: 0;"></div>
+      </div>
+      <div class="wf-flex-between wf-mb">
+        <span class="wf-text-sm">Attendee:</span>
+        <div class="wf-meta" style="width: 35%; margin-bottom: 0;"></div>
+      </div>
+
+      <div class="wf-flex-center">
+        <span class="wf-btn" data-goto="6">Add to Wallet</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Screen 6: Notification ───────────────────────────── -->
+
+  <h2 class="wf-screen-title">Step 6: Notification</h2>
+  <p class="wf-screen-desc">User gets event reminder with countdown.</p>
+
+  <div class="wf-screen" data-screen="6" data-title="Notification" data-desc="User gets event reminder with countdown.">
+    <div class="wf-header">
+      <span>Event Reminder</span>
+    </div>
+
+    <div class="wf-body">
+      <div class="wf-section">
+        <div class="wf-heading-lg" style="width: 65%;"></div>
+        <div class="wf-meta" style="width: 35%;"></div>
+      </div>
+
+      <div class="wf-card">
+        <div class="wf-heading-lg" style="width: 40%; margin: 0 auto 8px;"></div>
+        <div class="wf-meta" style="width: 50%; margin: 0 auto 12px;"></div>
+        <div class="wf-image" style="height: 140px;"></div>
+        <div class="wf-flex-center wf-mt" style="gap: 12px;">
+          <span class="wf-btn" data-goto="5">View Ticket</span>
+          <span class="wf-btn-secondary">Get Directions</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wf-proto-caption">
+    <div class="wf-proto-caption-title" id="wf-caption-title"></div>
+    <div class="wf-proto-caption-desc" id="wf-caption-desc"></div>
+  </div>
+
+  <script>
+    const body = document.body;
+    const screens = document.querySelectorAll('[data-screen]');
+    const total = screens.length;
+    const segBtns = document.querySelectorAll('.wf-segment-btn');
+    let current = 1;
+
+    function setView(view) {
+      body.classList.remove('wf-view-prototype');
+      segBtns.forEach(b => b.classList.remove('active'));
+      if (view === 'prototype') {
+        body.classList.add('wf-view-prototype');
+        segBtns[1].classList.add('active');
+        showScreen(current);
+      } else {
+        segBtns[0].classList.add('active');
+      }
+    }
+
+    function showScreen(n) {
+      current = Math.max(1, Math.min(n, total));
+      screens.forEach(s => s.classList.remove('wf-proto-visible'));
+      const target = document.querySelector(`[data-screen="${current}"]`);
+      if (target) target.classList.add('wf-proto-visible');
+      document.getElementById('wf-cur-title').textContent = target?.dataset.title || '';
+      document.getElementById('wf-counter').textContent = current + ' / ' + total;
+      document.getElementById('wf-prev').disabled = current === 1;
+      document.getElementById('wf-caption-title').textContent = 'Step ' + current + ': ' + (target?.dataset.title || '');
+      document.getElementById('wf-caption-desc').textContent = target?.dataset.desc || '';
+    }
+
+    function goScreen(delta) { showScreen(current + delta); }
+
+    document.addEventListener('click', e => {
+      if (!body.classList.contains('wf-view-prototype')) return;
+      const btn = e.target.closest('[data-goto]');
+      if (btn) showScreen(parseInt(btn.dataset.goto));
+    });
+
+    document.addEventListener('keydown', e => {
+      if (!body.classList.contains('wf-view-prototype')) return;
+      if (e.key === 'ArrowRight') goScreen(1);
+      if (e.key === 'ArrowLeft') goScreen(-1);
+    });
+  </script>
+
+</body>
+</html>

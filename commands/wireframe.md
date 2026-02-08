@@ -10,6 +10,20 @@ You are an expert UI/UX wireframe designer. You create ASCII wireframes for appl
 
 **Output formats:** This skill produces ASCII wireframes AND may convert them to interactive HTML prototypes using a `wf-*` CSS component library. When the user chooses "Browser" output, you MUST re-express every screen as semantic HTML — never wrap ASCII in `<pre>` tags. The HTML conversion rules appear in Step 6d. Plan for this from the start.
 
+> **⛔ FORBIDDEN IN HTML OUTPUT — These characters must NEVER appear in the HTML body (outside the flow diagram `<pre>`):**
+>
+> `████` `░░░░` `▓▓▓▓` `▒▒▒▒` — block fill characters
+> `┌` `┐` `└` `┘` `│` `─` `├` `┤` `┬` `┴` `┼` `▶` `▼` `◀` — box-drawing characters
+>
+> In ASCII wireframes, these represent visual elements. In HTML, they MUST be converted to semantic `wf-*` CSS classes:
+> - `████` → `<div class="wf-heading">` (empty div)
+> - `░░░░` → `<div class="wf-text">` (empty div)
+> - `▓▓▓▓` → `<div class="wf-image">` (empty div)
+> - `▒▒▒▒` → `<div class="wf-meta">` (empty div)
+> - `├───┤` → `<div class="wf-header">`, `<div class="wf-body">`, `<div class="wf-footer">`
+>
+> If you see ANY of these characters in your HTML output, STOP and fix them before proceeding.
+
 ## Mode Detection
 
 - If `$ARGUMENTS` contains a description → **Direct Mode**: generate flow diagram, get approval, then wireframe
@@ -20,7 +34,7 @@ You are an expert UI/UX wireframe designer. You create ASCII wireframes for appl
 Read the template library for structural reference:
 
 ```!
-cat "${CLAUDE_PLUGIN_ROOT}/scripts/layouts.md"
+cat "${CLAUDE_PLUGIN_ROOT:-/Users/chalpin/Sites/as/prototypes-2026/wireframe-skill}/scripts/layouts.md"
 ```
 
 Use these templates ONLY as a visual/structural reference — match the box-drawing characters, placeholder syntax, and layout techniques. Do NOT copy content patterns like nav bars, logos, or footer sections from these templates.
@@ -149,7 +163,7 @@ Step [N]: [Screen Name]
 After generating all wireframes, validate each one through the fixer script. For each wireframe:
 
 1. Write the wireframe text to a temp file
-2. Run it through the fixer: `echo '<wireframe>' | python3 "${CLAUDE_PLUGIN_ROOT}/scripts/fix_wireframe.py"`
+2. Run it through the fixer: `echo '<wireframe>' | python3 "${CLAUDE_PLUGIN_ROOT:-/Users/chalpin/Sites/as/prototypes-2026/wireframe-skill}/scripts/fix_wireframe.py"`
 3. If the fixer changes anything, use the fixed version instead
 4. If python3 is not available, skip this step — it's a quality enhancement, not a requirement
 
@@ -226,22 +240,23 @@ open -a Cursor wireframe-{slug}.md
 **Step 0: Read the reference example (MANDATORY — do this FIRST):**
 
 ```!
-cat "${CLAUDE_PLUGIN_ROOT}/examples/hotel-booking.html"
+cat "${CLAUDE_PLUGIN_ROOT:-/Users/chalpin/Sites/as/prototypes-2026/wireframe-skill}/examples/hotel-booking.html"
 ```
 
-Study this file. It shows the CORRECT output format: semantic HTML using `wf-*` CSS classes. Notice:
-- NO `<pre>` tags wrapping wireframes (the ONLY `<pre>` is the flow diagram)
+Study this file carefully. It shows the CORRECT output format: semantic HTML using `wf-*` CSS classes. Notice:
+- **NO `<pre>` tags wrapping wireframes** — the ONLY `<pre>` is the flow diagram at the top
 - Every screen is a `<div class="wf-screen">` containing `wf-*` elements
-- Placeholder bars (`████`, `░░░░`, `▓▓▓▓`, `▒▒▒▒`) are replaced with empty `<div>` elements using classes like `wf-heading`, `wf-text`, `wf-image`, `wf-meta`
+- Placeholder bars (`████`, `░░░░`, `▓▓▓▓`, `▒▒▒▒`) are replaced with EMPTY `<div>` elements using classes like `wf-heading`, `wf-text`, `wf-image`, `wf-meta`
 - Real text labels (field labels, button labels, section names) are preserved as text
 - Interactive elements use `wf-btn`, `wf-input`, `wf-select`, etc.
+- **ZERO block characters** appear anywhere in the HTML body text
 
-Your HTML output MUST match this style. Do NOT wrap ASCII wireframes in `<pre>` blocks. Do NOT invent your own CSS.
+> **CRITICAL:** Your HTML output MUST match this style. Do NOT wrap ASCII wireframes in `<pre>` blocks. Do NOT put block characters (████ ░░░░ ▓▓▓▓ ▒▒▒▒) in the HTML. Do NOT invent your own CSS — use ONLY the `wf-*` classes from the stylesheet. Every screen MUST be converted to semantic HTML elements.
 
 **Step 1: Load the CSS wireframe library (MANDATORY):**
 
 ```!
-cat "${CLAUDE_PLUGIN_ROOT}/scripts/wireframe.css"
+cat "${CLAUDE_PLUGIN_ROOT:-/Users/chalpin/Sites/as/prototypes-2026/wireframe-skill}/scripts/wireframe.css"
 ```
 
 You MUST read this file and inline its FULL contents into the HTML `<style>` block. Do not write your own CSS. Do not skip this step.
@@ -443,6 +458,74 @@ Key points:
 - `[ Continue ]` → `<span class="wf-btn" data-goto="5">`
 - NO `████`, `░░░░`, `▓▓▓▓`, or `▒▒▒▒` characters in the HTML
 
+**Worked example 2 — Card grid (Search & Browse) screen:**
+
+This ASCII wireframe with card grids:
+
+```
+┌────────────────────────────────────────────────────┐
+│  ████████████████████                              │
+├────────────────────────────────────────────────────┤
+│                                                    │
+│  ┌──────────────────────┐  ┌──────────────────────┐│
+│  │ ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ │  │ ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ ││
+│  │ ████████████████     │  │ ████████████████     ││
+│  │ ▒▒▒▒▒▒ · ▒▒▒▒▒      │  │ ▒▒▒▒▒▒ · ▒▒▒▒▒      ││
+│  │        [View Room]   │  │        [View Room]   ││
+│  └──────────────────────┘  └──────────────────────┘│
+│                                                    │
+└────────────────────────────────────────────────────┘
+```
+
+Becomes this HTML:
+
+```html
+<div class="wf-screen" data-screen="1" data-title="Search &amp; Browse" data-desc="User browses available properties.">
+  <div class="wf-header">
+    <div class="wf-heading-lg" style="margin-bottom: 0;"></div>
+  </div>
+  <div class="wf-body">
+    <div class="wf-row">
+      <div class="wf-col">
+        <div class="wf-card">
+          <div class="wf-image-sm"></div>
+          <div class="wf-heading" style="width: 80%;"></div>
+          <div class="wf-inline wf-mb-sm">
+            <div class="wf-meta" style="width: 30%;"></div>
+            <span style="color: #ccc;">&middot;</span>
+            <div class="wf-meta" style="width: 25%;"></div>
+          </div>
+          <div class="wf-flex-end">
+            <span class="wf-btn" data-goto="2">View Room</span>
+          </div>
+        </div>
+      </div>
+      <div class="wf-col">
+        <div class="wf-card">
+          <div class="wf-image-sm"></div>
+          <div class="wf-heading" style="width: 80%;"></div>
+          <div class="wf-inline wf-mb-sm">
+            <div class="wf-meta" style="width: 30%;"></div>
+            <span style="color: #ccc;">&middot;</span>
+            <div class="wf-meta" style="width: 25%;"></div>
+          </div>
+          <div class="wf-flex-end">
+            <span class="wf-btn" data-goto="2">View Room</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+Key points:
+- Card grids → `wf-row` with `wf-col` > `wf-card`
+- Image placeholders `▓▓▓▓` → `<div class="wf-image-sm">` (empty div)
+- Heading placeholders `████` → `<div class="wf-heading">` (empty div)
+- Metadata `▒▒▒▒ · ▒▒▒▒` → `<div class="wf-meta">` divs with `·` separator
+- `[View Room]` → `<span class="wf-btn" data-goto="2">View Room</span>`
+
 **Generation rules:**
 - Preserve ALL real text labels (field labels, button labels, section names, column headers, step indicators)
 - Use empty `<div>` elements for placeholder bars (headings, text, meta, images) — do NOT put text content in them
@@ -456,6 +539,10 @@ Key points:
 - Every `.wf-btn-link` that goes back → add `data-goto="{previous screen number}"`
 - Buttons that don't navigate (e.g. Search, sort toggles) → no `data-goto`
 - Each `data-screen` also needs `data-desc="{description}"` for the prototype caption
+- **Last screen edge case:** The final screen has no forward `data-goto`. It may have "Start Over" → `data-goto="1"` or no navigation buttons at all.
+- **Branching flows:** If a button can go to different screens (e.g., "View Ticket" goes to screen 5), use the specific target screen number.
+- **Modal close:** A modal's close/cancel button should `data-goto` back to the parent screen.
+- **Every screen must be reachable** from screen 1 via `data-goto` links. If a screen is unreachable, add navigation to it.
 
 **Modal / overlay screens:** If a screen is a modal, dialog, confirmation popup, or any overlay that appears on top of a previous screen, do NOT render it as a standalone `<div class="wf-screen">`. Instead use a stacked layout:
 
@@ -476,15 +563,52 @@ Key points:
 
 This shows the modal in context, layered over the screen the user was on. Use your judgement — a full-page form is a standalone `.wf-screen`, but a confirmation dialog or date picker popup is an overlay.
 
-**Step 4: Self-check before opening.**
+**Flow diagram — styled HTML alternative (optional):**
+
+Instead of an ASCII `<pre>` flow diagram, you may generate a styled HTML flow diagram using `wf-flow-*` classes. This produces clickable nodes that highlight the current screen in prototype view:
+
+```html
+<div class="wf-flow">
+  <div class="wf-flow-row">
+    <div class="wf-flow-node" data-flow-screen="1">Screen A</div>
+    <div class="wf-flow-arrow">&rarr;</div>
+    <div class="wf-flow-node" data-flow-screen="2">Screen B</div>
+    <div class="wf-flow-arrow">&rarr;</div>
+    <div class="wf-flow-node" data-flow-screen="3">Screen C</div>
+  </div>
+  <div class="wf-flow-arrow-down">&darr;</div>
+  <div class="wf-flow-row" style="flex-direction: row-reverse;">
+    <div class="wf-flow-node" data-flow-screen="6">Screen F</div>
+    <div class="wf-flow-arrow">&larr;</div>
+    <div class="wf-flow-node" data-flow-screen="5">Screen E</div>
+    <div class="wf-flow-arrow">&larr;</div>
+    <div class="wf-flow-node" data-flow-screen="4">Screen D</div>
+  </div>
+</div>
+```
+
+When using the styled flow, update `showScreen()` to add `.current` to the active flow node. If using the ASCII `<pre>` flow, keep the existing approach — both are valid.
+
+**Step 4: Self-check before opening. (MANDATORY — do NOT skip)**
 
 Before opening, verify your HTML:
 - Does every `<div class="wf-screen">` contain semantic `wf-*` elements (NOT `<pre>` blocks)?
-- Is the ONLY `<pre>` in the entire file the flow diagram?
-- Are all block characters (`████`, `░░░░`, `▓▓▓▓`, `▒▒▒▒`) absent from the HTML body?
+- Is the ONLY `<pre>` in the entire file the flow diagram (or zero `<pre>` if using styled flow)?
+- Are ALL block characters (`████`, `░░░░`, `▓▓▓▓`, `▒▒▒▒`) and box-drawing characters (`┌ ┐ └ ┘ │ ─`) absent from the HTML body?
+- Does every screen have `data-screen`, `data-title`, and `data-desc` attributes?
+- Do all `data-goto` targets point to existing screens?
+- Is every screen reachable from screen 1 via `data-goto` links?
 If any check fails, go back and fix the screen before proceeding.
 
-**Step 5: Open the file:**
+**Step 5: Open the file and verify in browser:**
+
+```bash
+open wireframe-{slug}.html
+```
+
+After opening, mentally verify:
+- **Screens view:** All screens visible with titles and descriptions. No raw ASCII or block characters visible.
+- **Prototype view:** Click "Prototype" segment. Verify you can navigate through all screens using buttons and arrow keys.
 
 ```bash
 open wireframe-{slug}.html
