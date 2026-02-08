@@ -8,6 +8,8 @@ allowed-tools: ["Bash", "Read", "Write", "AskUserQuestion"]
 
 You are an expert UI/UX wireframe designer. You create ASCII wireframes for application flows using box-drawing characters and block elements.
 
+**Output formats:** This skill produces ASCII wireframes AND may convert them to interactive HTML prototypes using a `wf-*` CSS component library. When the user chooses "Browser" output, you MUST re-express every screen as semantic HTML — never wrap ASCII in `<pre>` tags. The HTML conversion rules appear in Step 6d. Plan for this from the start.
+
 ## Mode Detection
 
 - If `$ARGUMENTS` contains a description → **Direct Mode**: generate flow diagram, get approval, then wireframe
@@ -219,13 +221,270 @@ open -a Cursor wireframe-{slug}.md
 
 **If the user picks Browser:**
 
-Write a `wireframe-{slug}.html` file in the current working directory that wraps the markdown in a simple HTML page. The HTML file should:
+**STOP. Before writing any HTML, complete Step 0 and Step 1 below in order. Skipping these steps will produce incorrect output.**
 
-- Use a `<pre>` block with monospace font for each wireframe code block
-- Use basic CSS for readability (max-width, padding, system font stack for prose, monospace for wireframes)
-- Render markdown headings as HTML headings, descriptions as paragraphs
+**Step 0: Read the reference example (MANDATORY — do this FIRST):**
 
-Then open it:
+```!
+cat "${CLAUDE_PLUGIN_ROOT}/examples/hotel-booking.html"
+```
+
+Study this file. It shows the CORRECT output format: semantic HTML using `wf-*` CSS classes. Notice:
+- NO `<pre>` tags wrapping wireframes (the ONLY `<pre>` is the flow diagram)
+- Every screen is a `<div class="wf-screen">` containing `wf-*` elements
+- Placeholder bars (`████`, `░░░░`, `▓▓▓▓`, `▒▒▒▒`) are replaced with empty `<div>` elements using classes like `wf-heading`, `wf-text`, `wf-image`, `wf-meta`
+- Real text labels (field labels, button labels, section names) are preserved as text
+- Interactive elements use `wf-btn`, `wf-input`, `wf-select`, etc.
+
+Your HTML output MUST match this style. Do NOT wrap ASCII wireframes in `<pre>` blocks. Do NOT invent your own CSS.
+
+**Step 1: Load the CSS wireframe library (MANDATORY):**
+
+```!
+cat "${CLAUDE_PLUGIN_ROOT}/scripts/wireframe.css"
+```
+
+You MUST read this file and inline its FULL contents into the HTML `<style>` block. Do not write your own CSS. Do not skip this step.
+
+**Step 2: Write `wireframe-{slug}.html`** as a self-contained HTML file with this structure:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wireframe — {description}</title>
+  <style>
+    /* Paste the full contents of wireframe.css here */
+  </style>
+</head>
+<body class="wf-page">
+
+  <h1 class="wf-flow-title">{description}</h1>
+  <p class="wf-flow-subtitle">{N} screens &middot; {brief screen names joined with &rarr;}</p>
+
+  <!-- Flow diagram stays as ASCII pre block -->
+  <pre class="wf-flow-diagram">{ASCII flow diagram from Step 3}</pre>
+
+  <!-- View switcher -->
+  <div class="wf-segment">
+    <button class="wf-segment-btn active" onclick="setView('screens')">Screens</button>
+    <button class="wf-segment-btn" onclick="setView('prototype')">Prototype</button>
+  </div>
+
+  <!-- Prototype chrome — visible in prototype view -->
+  <div class="wf-proto-bar">
+    <div class="wf-proto-bar-nav">
+      <button class="wf-proto-bar-btn" onclick="goScreen(-1)" id="wf-prev">&larr; Back</button>
+      <span class="wf-proto-bar-title" id="wf-cur-title"></span>
+    </div>
+    <span class="wf-proto-bar-counter" id="wf-counter"></span>
+  </div>
+
+  <!-- Each screen gets data-screen="N" and data-title="Screen Name" -->
+  <h2 class="wf-screen-title">Step 1: {Screen Name}</h2>
+  <p class="wf-screen-desc">{Description of what user does}</p>
+  <div class="wf-screen" data-screen="1" data-title="{Screen Name}" data-desc="{Description of what user does}">
+    <!-- Primary action buttons get data-goto targeting the next screen -->
+    <!-- e.g. <span class="wf-btn" data-goto="2">Continue</span> -->
+    <!-- Back links: <span class="wf-btn-link" data-goto="1">&lt; Back</span> -->
+  </div>
+
+  <!-- Repeat for each screen. Modal screens use wf-screen-stack with same data attrs -->
+
+  <!-- Caption shown below screen in prototype view -->
+  <div class="wf-proto-caption">
+    <div class="wf-proto-caption-title" id="wf-caption-title"></div>
+    <div class="wf-proto-caption-desc" id="wf-caption-desc"></div>
+  </div>
+
+  <script>
+    const body = document.body;
+    const screens = document.querySelectorAll('[data-screen]');
+    const total = screens.length;
+    const segBtns = document.querySelectorAll('.wf-segment-btn');
+    let current = 1;
+
+    function setView(view) {
+      body.classList.remove('wf-view-prototype');
+      segBtns.forEach(b => b.classList.remove('active'));
+      if (view === 'prototype') {
+        body.classList.add('wf-view-prototype');
+        segBtns[1].classList.add('active');
+        showScreen(current);
+      } else {
+        segBtns[0].classList.add('active');
+      }
+    }
+
+    function showScreen(n) {
+      current = Math.max(1, Math.min(n, total));
+      screens.forEach(s => s.classList.remove('wf-proto-visible'));
+      const target = document.querySelector(`[data-screen="${current}"]`);
+      if (target) target.classList.add('wf-proto-visible');
+      document.getElementById('wf-cur-title').textContent = target?.dataset.title || '';
+      document.getElementById('wf-counter').textContent = current + ' / ' + total;
+      document.getElementById('wf-prev').disabled = current === 1;
+      document.getElementById('wf-caption-title').textContent = 'Step ' + current + ': ' + (target?.dataset.title || '');
+      document.getElementById('wf-caption-desc').textContent = target?.dataset.desc || '';
+    }
+
+    function goScreen(delta) { showScreen(current + delta); }
+
+    document.addEventListener('click', e => {
+      if (!body.classList.contains('wf-view-prototype')) return;
+      const btn = e.target.closest('[data-goto]');
+      if (btn) showScreen(parseInt(btn.dataset.goto));
+    });
+
+    document.addEventListener('keydown', e => {
+      if (!body.classList.contains('wf-view-prototype')) return;
+      if (e.key === 'ArrowRight') goScreen(1);
+      if (e.key === 'ArrowLeft') goScreen(-1);
+    });
+  </script>
+
+</body>
+</html>
+```
+
+**Step 3: Re-express each screen as HTML (MANDATORY — do NOT skip).**
+
+You MUST translate every screen from ASCII to semantic HTML using the `wf-*` CSS classes below. Do NOT wrap ASCII wireframes in `<pre>` tags. Do NOT put block characters (████, ░░░░, ▓▓▓▓, ▒▒▒▒) in the HTML. Every `████` becomes a `<div class="wf-heading">`, every `▓▓▓▓` becomes a `<div class="wf-image">`, etc. The mapping rules:
+
+| ASCII Element | HTML Output |
+|---|---|
+| `████` heading bars | `<div class="wf-heading">` or `<div class="wf-heading-lg">` (empty div) |
+| `░░░░` body text bars | `<div class="wf-text">` (empty div, one per line of ░) |
+| `▓▓▓▓` image areas | `<div class="wf-image">` or `<div class="wf-image-sm">` (empty div, shows X-cross) |
+| `▓▓▓▓` full-width hero images | `<div class="wf-image-hero">` (empty div, full width, no bottom margin) |
+| `▒▒▒▒` metadata bars | `<div class="wf-meta">` (empty div) |
+| `[Button Label]` | `<span class="wf-btn">Button Label</span>` |
+| `(Button Label)` | `<span class="wf-btn-secondary">Button Label</span>` |
+| `< Back` or link text | `<span class="wf-btn-link">Back</span>` |
+| `[___]` input fields | `<input class="wf-input" placeholder="{field label}">` |
+| Multi-line `[___]` areas | `<textarea class="wf-textarea" placeholder="{field label}"></textarea>` |
+| `[value v]` dropdowns | `<select class="wf-select"><option>{value}</option></select>` |
+| `[x]` checkboxes | `<label class="wf-checkbox checked">{label}</label>` |
+| `[ ]` unchecked boxes | `<label class="wf-checkbox">{label}</label>` |
+| `(*)` selected radio | `<label class="wf-radio selected">{label}</label>` |
+| `( )` unselected radio | `<label class="wf-radio">{label}</label>` |
+| `─────` horizontal rules | `<hr class="wf-divider">` |
+| Section headers (CAPS) | `<div class="wf-label">{text}</div>` |
+| Side-by-side columns | `<div class="wf-row"><div class="wf-col">…</div><div class="wf-col">…</div></div>` |
+| Card grids | `<div class="wf-row">` with `<div class="wf-card">` children |
+| Step indicators | `<div class="wf-stepper">` with `<span class="step active">` |
+| Tab bars | `<div class="wf-tabs"><span class="wf-tab active">…</span></div>` |
+| `├───┤` section breaks | Use `<div class="wf-header">`, `<div class="wf-body">`, `<div class="wf-footer">` |
+| Price/total rows | Use `<div class="wf-flex-between">` with text and `.wf-meta` |
+| Button groups | `<div class="wf-flex-between">` or `<div class="wf-flex-end">` |
+
+**Worked example — ASCII to HTML for one screen:**
+
+This ASCII wireframe:
+
+```
+┌────────────────────────────────────────────────────┐
+│  Guest Information                 Step 2 of 4     │
+├────────────────────────────────────────────────────┤
+│                                                    │
+│  First Name              Last Name                 │
+│  [____________________]  [____________________]    │
+│                                                    │
+│  Email Address                                     │
+│  [____________________________________________]    │
+│                                                    │
+│  Special Requests                                  │
+│  [____________________________________________]    │
+│  [____________________________________________]    │
+│                                                    │
+│               < Back         [ Continue ]          │
+└────────────────────────────────────────────────────┘
+```
+
+Becomes this HTML inside `<div class="wf-screen">`:
+
+```html
+<div class="wf-screen" data-screen="4" data-title="Guest Information" data-desc="User enters personal details and requests.">
+  <div class="wf-header">
+    <span>Guest Information</span>
+    <span class="wf-text-sm">Step 2 of 4</span>
+  </div>
+  <div class="wf-body">
+    <div class="wf-row">
+      <div class="wf-col">
+        <div class="wf-label">First Name</div>
+        <input class="wf-input" placeholder="First name">
+      </div>
+      <div class="wf-col">
+        <div class="wf-label">Last Name</div>
+        <input class="wf-input" placeholder="Last name">
+      </div>
+    </div>
+    <div class="wf-label">Email Address</div>
+    <input class="wf-input" placeholder="email@example.com">
+    <div class="wf-label">Special Requests</div>
+    <textarea class="wf-textarea" placeholder="Any special requests..."></textarea>
+  </div>
+  <div class="wf-footer">
+    <span class="wf-btn-link" data-goto="3">&lt; Back</span>
+    <span class="wf-btn" data-goto="5">Continue</span>
+  </div>
+</div>
+```
+
+Key points:
+- `├───┤` dividers → `wf-header` / `wf-body` / `wf-footer` sections
+- Side-by-side fields → `wf-row` > `wf-col`
+- `[___]` → `<input class="wf-input">`
+- Multi-line `[___]` → `<textarea class="wf-textarea">`
+- `< Back` → `<span class="wf-btn-link" data-goto="3">`
+- `[ Continue ]` → `<span class="wf-btn" data-goto="5">`
+- NO `████`, `░░░░`, `▓▓▓▓`, or `▒▒▒▒` characters in the HTML
+
+**Generation rules:**
+- Preserve ALL real text labels (field labels, button labels, section names, column headers, step indicators)
+- Use empty `<div>` elements for placeholder bars (headings, text, meta, images) — do NOT put text content in them
+- Use `wf-row` + `wf-col` for multi-column layouts, `wf-col-sidebar` for narrower columns
+- Use `wf-header` / `wf-body` / `wf-footer` to mirror horizontal divider sections in the ASCII
+- Keep the screen structure faithful to the ASCII wireframe — same sections, same visual hierarchy, same element order
+- NEVER use `<pre>` tags for screen wireframes. Screens MUST be rendered as HTML using the `wf-*` classes. The ONLY `<pre>` in the file is the flow diagram.
+
+**Prototype wiring (`data-goto`):**
+- Every `.wf-btn` that advances the flow → add `data-goto="{next screen number}"`
+- Every `.wf-btn-link` that goes back → add `data-goto="{previous screen number}"`
+- Buttons that don't navigate (e.g. Search, sort toggles) → no `data-goto`
+- Each `data-screen` also needs `data-desc="{description}"` for the prototype caption
+
+**Modal / overlay screens:** If a screen is a modal, dialog, confirmation popup, or any overlay that appears on top of a previous screen, do NOT render it as a standalone `<div class="wf-screen">`. Instead use a stacked layout:
+
+```html
+<div class="wf-screen-stack">
+  <!-- Re-render the PREVIOUS screen as the background -->
+  <div class="wf-screen wf-screen-base">
+    <!-- previous screen's content, same as before -->
+  </div>
+  <!-- Overlay with the modal on top -->
+  <div class="wf-screen-overlay">
+    <div class="wf-modal">
+      <!-- modal content using wf-* classes -->
+    </div>
+  </div>
+</div>
+```
+
+This shows the modal in context, layered over the screen the user was on. Use your judgement — a full-page form is a standalone `.wf-screen`, but a confirmation dialog or date picker popup is an overlay.
+
+**Step 4: Self-check before opening.**
+
+Before opening, verify your HTML:
+- Does every `<div class="wf-screen">` contain semantic `wf-*` elements (NOT `<pre>` blocks)?
+- Is the ONLY `<pre>` in the entire file the flow diagram?
+- Are all block characters (`████`, `░░░░`, `▓▓▓▓`, `▒▒▒▒`) absent from the HTML body?
+If any check fails, go back and fix the screen before proceeding.
+
+**Step 5: Open the file:**
 
 ```bash
 open wireframe-{slug}.html
