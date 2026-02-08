@@ -34,7 +34,7 @@ You are an expert UI/UX wireframe designer. You create ASCII wireframes for appl
 Read the template library for structural reference:
 
 ```!
-cat "${CLAUDE_PLUGIN_ROOT}/scripts/layouts.md"
+cat "${CLAUDE_PLUGIN_ROOT:-/Users/chalpin/Sites/as/prototypes-2026/wireframe-skill}/scripts/layouts.md"
 ```
 
 Use these templates ONLY as a visual/structural reference — match the box-drawing characters, placeholder syntax, and layout techniques. Do NOT copy content patterns like nav bars, logos, or footer sections from these templates.
@@ -163,7 +163,7 @@ Step [N]: [Screen Name]
 After generating all wireframes, validate each one through the fixer script. For each wireframe:
 
 1. Write the wireframe text to a temp file
-2. Run it through the fixer: `echo '<wireframe>' | python3 "${CLAUDE_PLUGIN_ROOT}/scripts/fix_wireframe.py"`
+2. Run it through the fixer: `echo '<wireframe>' | python3 "${CLAUDE_PLUGIN_ROOT:-/Users/chalpin/Sites/as/prototypes-2026/wireframe-skill}/scripts/fix_wireframe.py"`
 3. If the fixer changes anything, use the fixed version instead
 4. If python3 is not available, skip this step — it's a quality enhancement, not a requirement
 
@@ -240,7 +240,7 @@ open -a Cursor wireframe-{slug}.md
 **Step 0: Read the reference example (MANDATORY — do this FIRST):**
 
 ```!
-cat "${CLAUDE_PLUGIN_ROOT}/examples/hotel-booking.html"
+cat "${CLAUDE_PLUGIN_ROOT:-/Users/chalpin/Sites/as/prototypes-2026/wireframe-skill}/examples/hotel-booking.html"
 ```
 
 Study this file carefully. It shows the CORRECT output format: semantic HTML using `wf-*` CSS classes. Notice:
@@ -256,7 +256,7 @@ Study this file carefully. It shows the CORRECT output format: semantic HTML usi
 **Step 1: Load the CSS wireframe library (MANDATORY):**
 
 ```!
-cat "${CLAUDE_PLUGIN_ROOT}/scripts/wireframe.css"
+cat "${CLAUDE_PLUGIN_ROOT:-/Users/chalpin/Sites/as/prototypes-2026/wireframe-skill}/scripts/wireframe.css"
 ```
 
 You MUST read this file and inline its FULL contents into the HTML `<style>` block. Do not write your own CSS. Do not skip this step.
