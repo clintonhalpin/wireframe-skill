@@ -39,11 +39,18 @@ Wireframes use block characters for visual hierarchy:
 | `▓▓▓▓` | Images / media |
 | `▒▒▒▒` | Secondary text / metadata |
 
+## Examples
+
+- [Boutique Hotel Booking](examples/hotel-booking.md) — search, room detail, date picker, guest form, payment, confirmation
+- [Recipe Discovery & Meal Planning](examples/recipe-meal-plan.md) — content feed, recipe detail, meal plan grid, shopping list, empty state
+- [Event RSVP & Ticketing](examples/event-ticketing.md) — event landing, pricing table, attendee form, payment, e-ticket with QR, notification
+
 ## Structure
 
 ```
 commands/       Skill command definitions
 scripts/        Template library and post-processing tools
+examples/       Example wireframe outputs
 ```
 
 ## Author
